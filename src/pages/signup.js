@@ -1,4 +1,6 @@
+// signup.js
 import axios from 'axios';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 export default function SignUp() {
@@ -6,6 +8,7 @@ export default function SignUp() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
+  const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -17,12 +20,19 @@ export default function SignUp() {
     }
 
     try {
-      // Replace with your API endpoint
-      const response = await axios.post('/api/signup', { email, password });
-      // Handle response...
+      const response = await axios.post('/api/auth/register', { email, password });
+      console.log('Signup successful:', response.data);
+
+      // Automatically log in the user
+      const loginResponse = await axios.post('/api/auth/login', { email, password });
+      console.log('Login successful:', loginResponse.data);
+      // Store the JWT token securely (e.g., in localStorage)
+      localStorage.setItem('token', loginResponse.data.token);
+
+      router.push('/createProfile');
     } catch (error) {
       setError('An error occurred during sign up.');
-      // More error handling...
+      console.error('Signup error:', error.response ? error.response.data : error.message);
     }
   };
 

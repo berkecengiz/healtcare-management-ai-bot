@@ -1,5 +1,8 @@
-import { useState } from 'react';
-// import axios or your preferred method for API requests
+import axios from 'axios';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
+
+import jwt from 'jsonwebtoken';
 
 export default function CreateProfile() {
   const [profileData, setProfileData] = useState({
@@ -11,14 +14,43 @@ export default function CreateProfile() {
     vo2Max: "",
   });
 
+  const router = useRouter();
+
+  useEffect(() => {
+    // Retrieve the user ID from the stored JWT token
+    const token = localStorage.getItem('token');
+    if (token) {
+      // Decode the token to get the user ID
+      const decoded = jwt.decode(token);
+      setProfileData(prevData => ({ ...prevData, userId: decoded.userId }));
+    } else {
+      // Redirect to login if no token is found
+      router.push('/login');
+    }
+  }, [router]);
+
   const handleChange = (e) => {
     setProfileData({ ...profileData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission, e.g., sending data to your API
-    // axios.post('/api/createProfile', profileData);
+    
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.post('/api/createProfile', profileData, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      
+      console.log('Profile created:', response.data);
+      router.push('/chat');
+
+    } catch (error) {
+      console.error('Error creating profile:', error.response ? error.response.data : error.message);
+      // Handle errors, such as displaying a notification to the user
+    }
   };
 
   return (
