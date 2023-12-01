@@ -160,8 +160,7 @@ export default function ProfileSidebar() {
               </div>
             )}
           </div>
-          {/* Additional fields wrapped in divs like the Height field */}
-          
+          {/* Additional fields... */}
         </div>
         <button 
           type="button" 
