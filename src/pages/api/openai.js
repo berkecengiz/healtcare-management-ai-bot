@@ -1,12 +1,14 @@
 // pages/api/openai.js
 import axios from 'axios';
 
-// Create an instance of OpenAI with your API key
-// const openai = new OpenAI({ apiKey: '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' });
-
 function constructUserProfileMessage(userProfile) {
-    // Example: Construct a message based on user profile fields
-    return `The user is ${userProfile.age} years old, has a height of ${userProfile.height}, weight of ${userProfile.weight}, heart rate of ${userProfile.heartRate}, and vo2Max is ${userProfile.vo2Max}.`;
+    // Construct a clear and concise message based on user profile fields
+    let userProfileMessage = `User's healthcare profile: Age ${userProfile.age} years, Height ${userProfile.height}, Weight ${userProfile.weight}, Heart Rate ${userProfile.heartRate} bpm, VO2 Max ${userProfile.vo2Max}.`;
+
+    // Add guidance for the type of information or advice the chatbot should provide
+    userProfileMessage += " Provide insights and recommendations related to general wellness, fitness, and healthy living. Avoid giving specific medical advice or diagnosing health conditions.";
+
+    return userProfileMessage;
 }
 
 
@@ -20,7 +22,7 @@ export default async function handler(req, res) {
                 { role: "user", content: req.body.userQuestion }
             ]
         };
-        console.log('API KEY', process.env.OPENAI_API_KEY)
+
         const headers = {
             'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
             'Content-Type': 'application/json'

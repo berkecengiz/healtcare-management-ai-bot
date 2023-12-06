@@ -79,14 +79,13 @@ export default function Chat() {
 };
 
 
-  
   return (
     <div className="flex h-screen">
       <ProfileSidebar />
       <div className="flex-1 flex flex-col">
-        <div className="flex-grow overflow-auto p-4 space-y-2">
+        <div className="flex-grow overflow-auto p-4">
           {messages.map((message, index) => (
-            <div key={index} className={`rounded-lg p-2 text-white max-w-xs mx-2 ${message.sender === 'user' ? 'bg-blue-500 self-end' : 'bg-gray-300 self-start text-black'}`}>
+            <div key={index} className={`rounded-lg p-2 max-w-xs mx-2 ${message.sender === 'user' ? 'bg-blue-500 text-white' : 'bg-gray-100 text-gray-800 ml-auto'}`}>
               {message.text}
             </div>
           ))}
@@ -105,3 +104,4 @@ export default function Chat() {
     </div>
   );
 }
+
