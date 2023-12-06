@@ -1,20 +1,85 @@
-// Import useState from React
-import { useState } from 'react';
-// Import ProfileSidebar component
+// Import necessary hooks and axios
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 import ProfileSidebar from './ProfileSidebar';
 
 export default function Chat() {
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState('');
+  const [userProfile, setUserProfile] = useState({}); // State for user profile
 
-  const handleSendMessage = (e) => {
+  const fetchProfile = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.get('/api/userProfile', {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      setUserProfile(response.data);
+    } catch (error) {
+      console.error('Error fetching profile data:', error);
+    }
+  };
+  useEffect(() => {
+
+
+    fetchProfile();
+  }, []);
+
+  const handleSendMessage = async (e) => {
     e.preventDefault();
     if (!inputValue.trim()) return;
-    setMessages([...messages, { text: inputValue, sender: 'user' }]);
-    setInputValue('');
-    // TODO: Add OpenAI API call here
-  };
 
+    // Add user's question to the chat
+    const newUserMessage = { text: inputValue, sender: 'user' };
+    setMessages(messages => [...messages, newUserMessage]);
+
+    try {
+        // Call OpenAI API for a response
+        const token = localStorage.getItem('token');
+        const profile = await axios.get('/api/userProfile', {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+
+        if (!profile) {
+            throw new Error('User profile not found');
+        }
+        console.log("Profile:", profile);
+        const response = await axios.post('/api/openai', {
+            userProfile: userProfile, // Assuming userProfile state is already fetched and stored
+            userQuestion: inputValue
+        });
+        console.log("OpenAI Response:", response);
+
+        if (response.data.choices && response.data.choices.length > 0) {
+            const aiResponse = response.data.choices[0].message.content.trim();
+            console.log("AI Response:", aiResponse);
+
+            // Add GPT response to the chat
+            const newAiMessage = { text: aiResponse, sender: 'ai' };
+            setMessages(messages => [...messages, newAiMessage]);
+        } else {
+            console.error('No AI response found in the OpenAI API response.');
+        }
+    } catch (error) {
+        console.error('Error in OpenAI API call:', error);
+        if (axios.isAxiosError(error) && error.response) {
+            console.error('Error response data:', error.response.data);
+            console.error('Error response status:', error.response.status);
+            console.error('Error response headers:', error.response.headers);
+        } else {
+            console.error('Error message:', error.message);
+        }
+    }
+
+    setInputValue('');
+};
+
+
+  
   return (
     <div className="flex h-screen">
       <ProfileSidebar />
