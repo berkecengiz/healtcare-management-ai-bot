@@ -14,15 +14,23 @@ function constructUserProfileMessage(userProfile) {
 
 export default async function handler(req, res) {
     if (req.method === 'POST') {
+        const { userProfile, userQuestion, messages } = req.body;
+
+
+        messages.push({ role: "user", content: userQuestion })
         const data = {
             model: "gpt-3.5-turbo",
             messages: [
-                { role: "system", content: "You are a chatbot that answers questions about the healthcare domain." },
-                { role: "system", content: constructUserProfileMessage(req.body.userProfile) },
-                { role: "user", content: req.body.userQuestion }
+                { role: "system", content: constructUserProfileMessage(userProfile) },
+                { role: "system", content: "Answers can be only 1000 characters long." },
+                { role: "system", content: "Only answer healhcare and fitness related questions. Reject answering questions about other topics." },
+                // { role: "user", content: userQuestion },
+                ...messages, // include the full message history
             ]
         };
 
+
+        console.log("OpenAI Request:", data.messages)
         const headers = {
             'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
             'Content-Type': 'application/json'

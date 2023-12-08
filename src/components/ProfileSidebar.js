@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
-export default function ProfileSidebar() {
+export default function ProfileSidebar({ onLogout,  }) {
   const [profile, setProfile] = useState({
     name: '',
     age: '',
@@ -178,6 +178,13 @@ export default function ProfileSidebar() {
           </button>
         )}
       </form>
+      <button 
+        onClick={onLogout}
+        className="mt-2 bg-red-500 text-white p-2 rounded w-full"
+      >
+        Logout
+      </button>
+
     </div>
   );
   

@@ -21,12 +21,11 @@ export default function Chat() {
       console.error('Error fetching profile data:', error);
     }
   };
+
   useEffect(() => {
-
-
     fetchProfile();
   }, []);
-
+  
   const handleSendMessage = async (e) => {
     e.preventDefault();
     if (!inputValue.trim()) return;
@@ -49,9 +48,14 @@ export default function Chat() {
         }
         console.log("Profile:", profile);
         const response = await axios.post('/api/openai', {
-            userProfile: userProfile, // Assuming userProfile state is already fetched and stored
-            userQuestion: inputValue
-        });
+          userProfile: userProfile, 
+          userQuestion: inputValue,
+          messages: messages.map(message => ({
+              role: message.sender === 'user' ? 'user' : 'assistant',
+              content: message.text
+          }))
+      });
+      
         console.log("OpenAI Response:", response);
 
         if (response.data.choices && response.data.choices.length > 0) {
@@ -79,29 +83,42 @@ export default function Chat() {
 };
 
 
-  return (
-    <div className="flex h-screen">
-      <ProfileSidebar />
-      <div className="flex-1 flex flex-col">
-        <div className="flex-grow overflow-auto p-4">
-          {messages.map((message, index) => (
-            <div key={index} className={`rounded-lg p-2 max-w-xs mx-2 ${message.sender === 'user' ? 'bg-blue-500 text-white' : 'bg-gray-100 text-gray-800 ml-auto'}`}>
-              {message.text}
-            </div>
-          ))}
-        </div>
-        <form onSubmit={handleSendMessage} className="flex p-4 bg-blue-100">
-          <input
-            type="text"
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            placeholder="Type your message here..."
-            className="flex-1 rounded-full p-2 border-gray-300 focus:ring-blue-500 focus:border-blue-500"
-          />
-          <button type="submit" className="ml-4 px-4 py-2 bg-blue-500 text-white rounded-full">Send</button>
-        </form>
-      </div>
-    </div>
-  );
-}
+  const handleLogout = async () => {
+      localStorage.removeItem('token');
+      // Redirect to login page or home page
+      window.location.href = '/login'; // Use the appropriate route for your login page
+    };
 
+    return (
+      <div className="flex h-screen w-full dark:bg-gray-800">
+      <ProfileSidebar onLogout={handleLogout}  />
+        <div className="flex-1 flex flex-col bg-gray-100">
+          {/* Chat Messages Container */}
+          <div className="flex-grow overflow-auto p-4">
+            {messages.map((message, index) => (
+              <div 
+                key={index} 
+                className={`rounded-lg p-2 max-w-xs mx-2 my-1 shadow transition duration-300 transform hover:scale-105 ${message.sender === 'user' ? 'bg-blue-600 text-white' : 'bg-white text-gray-800 ml-auto'}`}
+              >
+                {message.text}
+              </div>
+            ))}
+          </div>
+    
+          {/* Chat Input Form */}
+          <form onSubmit={handleSendMessage} className="flex p-4 bg-white border-t-2 border-gray-300 sticky bottom-0"> 
+            <input
+              type="text"
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              placeholder="Type your message here..."
+              className="flex-1 rounded-full p-2 border-gray-300 focus:border-blue-500 focus:bg-white focus:ring-1 focus:ring-blue-500 transition duration-300"
+            />
+            <button type="submit" className="ml-4 px-4 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition duration-300 ease-in-out">Send</button>
+          </form>
+        </div>
+      </div>
+    );
+    
+    
+}
