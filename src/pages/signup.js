@@ -29,7 +29,7 @@ export default function SignUp() {
       // Store the JWT token securely (e.g., in localStorage)
       localStorage.setItem('token', loginResponse.data.token);
 
-      router.push('/createProfile');
+      router.push('/create-profile');
     } catch (error) {
       setError('An error occurred during sign up.');
       console.error('Signup error:', error.response ? error.response.data : error.message);

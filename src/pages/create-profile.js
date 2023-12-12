@@ -6,12 +6,16 @@ import jwt from 'jsonwebtoken';
 
 export default function CreateProfile() {
   const [profileData, setProfileData] = useState({
-    name: "",
-    age: "",
-    height: "",
-    weight: "",
-    heartRate: "",
-    vo2Max: "",
+    name: '',
+    age: '',
+    height: '',
+    weight: '',
+    heartRate: '',
+    vo2Max: '',
+    bloodType: '', // Add bloodType field
+    allergies: [], // Add allergies field as an array
+    medications: [], // Add medications field as an array
+    medicalConditions: [], // Add medicalConditions field as an array
   });
 
   const router = useRouter();
@@ -30,15 +34,24 @@ export default function CreateProfile() {
   }, [router]);
 
   const handleChange = (e) => {
-    setProfileData({ ...profileData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+
+    if (name === 'allergies' || name === 'medications' || name === 'medicalConditions') {
+      // If the field is allergies, medications, or medicalConditions, split the input by commas to store as an array
+      const valuesArray = value.split(',').map((item) => item.trim());
+      setProfileData((prevData) => ({ ...prevData, [name]: valuesArray }));
+    } else {
+      setProfileData((prevData) => ({ ...prevData, [name]: value }));
+    }
   };
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.post('/api/createProfile', profileData, {
+      const response = await axios.post('/api/profile', profileData, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -108,6 +121,38 @@ export default function CreateProfile() {
             onChange={handleChange}
             className="border-2 border-blue-300 rounded p-2 mb-2 w-full"
           />
+           <input
+          type="text"
+          name="bloodType"
+          placeholder="Blood Type"
+          value={profileData.bloodType}
+          onChange={handleChange}
+          className="border-2 border-blue-300 rounded p-2 mb-2 w-full"
+        />
+        <input
+          type="text"
+          name="allergies"
+          placeholder="Allergies (comma-separated)"
+          value={profileData.allergies}
+          onChange={handleChange}
+          className="border-2 border-blue-300 rounded p-2 mb-2 w-full"
+        />
+        <input
+          type="text"
+          name="medications"
+          placeholder="Medications (comma-separated)"
+          value={profileData.medications}
+          onChange={handleChange}
+          className="border-2 border-blue-300 rounded p-2 mb-2 w-full"
+        />
+        <input
+          type="text"
+          name="medicalConditions"
+          placeholder="Medical Conditions (comma-separated)"
+          value={profileData.medicalConditions}
+          onChange={handleChange}
+          className="border-2 border-blue-300 rounded p-2 mb-2 w-full"
+        />
         </div>
         <button type="submit" className="mt-4 bg-blue-500 text-white p-2 rounded w-full">
           Create Profile

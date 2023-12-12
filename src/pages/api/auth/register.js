@@ -1,3 +1,5 @@
+//src/pages/api/auth/register.js
+
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcryptjs';
 
@@ -9,6 +11,11 @@ export default async function register(req, res) {
   }
 
   const { email, password } = req.body;
+
+  if (!email || !password) {
+    return res.status(400).json({ message: 'Email and password are required' });
+  }
+  
   const hashedPassword = await bcrypt.hash(password, 10);
 
   try {

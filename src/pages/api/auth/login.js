@@ -1,8 +1,9 @@
-import { PrismaClient } from '@prisma/client';
+//src/pages/api/auth/login.js
+
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import prisma from '../../../lib/prisma.js';
 
-const prisma = new PrismaClient();
 
 export default async function login(req, res) {
   if (req.method !== 'POST') {

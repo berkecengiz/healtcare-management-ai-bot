@@ -16,7 +16,7 @@ export default function ProfileSidebar({ onLogout,  }) {
     const fetchProfile = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('/api/userProfile', {
+        const response = await axios.get('/api/profile', {
           headers: {
             Authorization: `Bearer ${token}`
           }
@@ -43,7 +43,7 @@ export default function ProfileSidebar({ onLogout,  }) {
     e.preventDefault();
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.put('/api/editProfile', profile, {
+      const response = await axios.put('/api/profile', profile, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -56,7 +56,7 @@ export default function ProfileSidebar({ onLogout,  }) {
   };
 
   return (
-    <div className="w-64 h-screen bg-blue-100 p-5 text-sm">
+  <div className="w-64 bg-blue-100 p-5 text-sm">
       <form onSubmit={handleSubmit}>
         <div className="flex flex-col items-center mb-6">
           <div className="w-24 h-24 bg-blue-300 rounded-full mb-3"></div>
@@ -160,7 +160,78 @@ export default function ProfileSidebar({ onLogout,  }) {
               </div>
             )}
           </div>
-          {/* Additional fields... */}
+          <div>
+            {editMode ? (
+              <input
+                type="text"
+                name="bloodType"
+                placeholder="Blood Type"
+                value={profile.bloodType}
+                onChange={handleChange}
+                className="border-2 border-blue-300 rounded p-2 w-full"
+              />
+            ) : (
+              <div className="flex items-center justify-between">
+                <span>Blood Type</span>
+                <span>{profile.bloodType}</span>
+              </div>
+            )}
+          </div>
+          {/* allergies */}
+          <div>
+            {editMode ? (
+              <input
+                type="text"
+                name="allergies"
+                placeholder="Allergies"
+                value={profile.allergies}
+                onChange={handleChange}
+                className="border-2 border-blue-300 rounded p-2 w-full"
+              />
+            ) : (
+              <div className="flex items-center justify-between">
+                <span>Allergies</span>
+                <span>{profile.allergies}</span>
+              </div>
+            )}
+          </div>
+          {/* medications */}
+          <div>
+            {editMode ? (
+              <input
+                type="text"
+                name="medications"
+                placeholder="Medications"
+                value={profile.medications}
+                onChange={handleChange}
+                className="border-2 border-blue-300 rounded p-2 w-full"
+              />
+            ) : (
+              <div className="flex items-center justify-between">
+                <span>Medications</span>
+                <span>{profile.medications}</span>
+              </div>
+            )}
+            </div>
+            {/* medicalConditions */}
+            <div>
+            {editMode ? (
+              <input
+                type="text"
+                name="medicalConditions"
+                placeholder="Medical Conditions"
+                value={profile.medicalConditions}
+                onChange={handleChange}
+                className="border-2 border-blue-300 rounded p-2 w-full"
+              />
+            ) : (
+              <div className="flex items-center justify-between">
+                <span>Medical Conditions</span>
+                <span>{profile.medicalConditions}</span>
+              </div>
+            )}
+            </div>
+
         </div>
         <button 
           type="button" 
