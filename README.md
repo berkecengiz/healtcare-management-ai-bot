@@ -18,9 +18,9 @@ Before you begin, ensure you have the following installed:
 Create a .env file in the root of the project with the following properties:
 
 ```
-DATABASE_URL="<your-database-url>"
-JWT_SECRET=<your-jwt-secret>
-OPENAI_API_KEY="<your-open-api-key>"
+DATABASE_URL="your-database-url"
+JWT_SECRET="your-jwt-secret"
+OPENAI_API_KEY="your-open-api-key"
 ```
 
 Replace your-database-url, your-jwt-secret, and your-openai-api-key with your actual PostgreSQL database URL, JWT secret, and OpenAI API key, respectively.
