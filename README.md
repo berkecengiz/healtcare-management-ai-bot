@@ -12,6 +12,19 @@ Before you begin, ensure you have the following installed:
 - **Prisma:** The database toolkit used for handling migrations and database operations. Prisma will be added to the project as a dependency.
 
 ## Getting Started
+
+### Creating .env file
+
+Create a .env file in the root of the project with the following properties:
+
+```
+DATABASE_URL="<your-database-url>"
+JWT_SECRET=<your-jwt-secret>
+OPENAI_API_KEY="<your-open-api-key>"
+```
+
+Replace your-database-url, your-jwt-secret, and your-openai-api-key with your actual PostgreSQL database URL, JWT secret, and OpenAI API key, respectively.
+
 ### Migrating Database Schema with Prisma
 
 Before running the development server, apply any pending database migrations using Prisma:
@@ -20,6 +33,7 @@ Before running the development server, apply any pending database migrations usi
 
 npx prisma migrate dev
 ```
+
 This command will create new migrations for any changes in your Prisma schema and apply them to your development database.
 
 ### Running the Development Server
