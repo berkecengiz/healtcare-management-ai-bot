@@ -5,11 +5,11 @@ This is a Next.js project bootstrapped with create-next-app.
 
 Before you begin, ensure you have the following installed:
 
-- Node.js: The JavaScript runtime environment. It's required to run the Next.js application. You can download it from the Node.js official website.
+- **Node.js:** The JavaScript runtime environment. It's required to run the Next.js application. You can download it from the Node.js official website.
 
-- PostgreSQL: The relational database system. This project uses PostgreSQL as its database. You can download and install it from the PostgreSQL official website.
+- **PostgreSQL:** The relational database system. This project uses PostgreSQL as its database. You can download and install it from the PostgreSQL official website.
 
-- Prisma: The database toolkit used for handling migrations and database operations. Prisma will be added to the project as a dependency.
+-** Prisma:** The database toolkit used for handling migrations and database operations. Prisma will be added to the project as a dependency.
 
 ## Getting Started
 ### Migrating Database Schema with Prisma
