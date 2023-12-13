@@ -21,7 +21,8 @@ Before running the development server, apply any pending database migrations usi
 npx prisma migrate dev
 ```
 This command will create new migrations for any changes in your Prisma schema and apply them to your development database.
-Running the Development Server
+
+### Running the Development Server
 
 After migrating your database, start the development server:
 
