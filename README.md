@@ -9,7 +9,7 @@ Before you begin, ensure you have the following installed:
 
 - **PostgreSQL:** The relational database system. This project uses PostgreSQL as its database. You can download and install it from the PostgreSQL official website.
 
--** Prisma:** The database toolkit used for handling migrations and database operations. Prisma will be added to the project as a dependency.
+- **Prisma:** The database toolkit used for handling migrations and database operations. Prisma will be added to the project as a dependency.
 
 ## Getting Started
 ### Migrating Database Schema with Prisma
