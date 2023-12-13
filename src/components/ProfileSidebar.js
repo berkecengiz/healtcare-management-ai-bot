@@ -9,6 +9,10 @@ export default function ProfileSidebar({ onLogout,  }) {
     weight: '',
     heartRate: '',
     vo2Max: '',
+    bloodType: '',
+    allergies: '',
+    medications: '',
+    medicalConditions: ''
   });
   const [editMode, setEditMode] = useState(false);
 
@@ -26,8 +30,6 @@ export default function ProfileSidebar({ onLogout,  }) {
         console.error('Error fetching profile data:', error);
       }
     };
-    
-
     fetchProfile();
   }, []);
 
