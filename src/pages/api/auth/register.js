@@ -1,9 +1,8 @@
 //src/pages/api/auth/register.js
 
-import { PrismaClient } from '@prisma/client';
+import prisma from '@/lib/prisma';
 import bcrypt from 'bcryptjs';
 
-const prisma = new PrismaClient();
 
 export default async function register(req, res) {
   if (req.method !== 'POST') {

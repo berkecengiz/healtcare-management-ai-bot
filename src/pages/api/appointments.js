@@ -1,9 +1,7 @@
 // pages/api/appointments.js
 
-import { PrismaClient } from '@prisma/client';
+import prisma from '../../lib/prisma';
 import jwt from 'jsonwebtoken';
-
-const prisma = new PrismaClient();
 
 export default async function handler(req, res) {
   try {
@@ -12,6 +10,11 @@ export default async function handler(req, res) {
     if (!token) {
       return res.status(401).json({ message: "Unauthorized access" });
     }
+
+
+
+
+
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const userId = decoded.userId;
 
