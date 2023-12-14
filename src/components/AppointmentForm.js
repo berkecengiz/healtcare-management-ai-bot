@@ -1,6 +1,6 @@
 // src/components/AppointmentForm.js
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 // Function to generate time slots between 9 AM and 5 PM in 30-minute intervals
@@ -23,7 +23,33 @@ const AppointmentForm = () => {
   const [description, setDescription] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
 
+  // New state for doctors
+  const [doctors, setDoctors] = useState([]);
+  const [selectedDoctor, setSelectedDoctor] = useState('');
+
   const timeSlots = generateTimeSlots();
+
+  useEffect(() => {
+    // Fetch doctors when the component mounts
+    const fetchDoctors = async () => {
+      const token = localStorage.getItem('token');
+      try {
+        const response = await axios.get('/api/doctors', {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        setDoctors(response.data);
+        if (response.data.length > 0) {
+          setSelectedDoctor(response.data[0].id); // Default to the first doctor
+        }
+      } catch (error) {
+        console.error('Error fetching doctors:', error);
+      }
+    };
+
+    fetchDoctors();
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -72,7 +98,21 @@ const AppointmentForm = () => {
             required
           />
         </div>
-  
+        <div className="mb-4">
+          <label htmlFor="doctor" className="text-gray-700 block mb-2">Doctor</label>
+          <select
+            id="doctor"
+            value={selectedDoctor}
+            onChange={(e) => setSelectedDoctor(e.target.value)}
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+            required
+          >
+            {doctors.map(doctor => (
+              <option value={doctor.id} key={doctor.id}>{doctor.name}</option>
+            ))}
+          </select>
+        </div>
+
         <div className="mb-4">
           <label htmlFor="time-slot" className="text-gray-700 block mb-2">Time Slot</label>
           <select
