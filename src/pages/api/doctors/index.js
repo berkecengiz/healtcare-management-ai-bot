@@ -1,5 +1,6 @@
-// src/pages/api/doctors.js
-import prisma from '../../lib/prisma';
+// src/pages/api/doctors/index.js
+
+import prisma from '../../../lib/prisma';
 import jwt from 'jsonwebtoken';
 
 // GET /api/doctors
