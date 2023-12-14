@@ -44,11 +44,18 @@ export async function post(req, res) {
 
 // DELETE /api/doctors/:id
 export async function del(req, res) {
-    const doctorId = req.query.id;
+  const { doctorId } = req.params;
+  console.log(doctorId);
+
+  try {
     const result = await prisma.doctor.delete({
-      where: { id: doctorId },
+        where: { id: doctorId },
     });
     res.json(result);
+  } catch (error) {
+      console.error("Error deleting doctor:", error);
+      res.status(500).send("Error deleting doctor");
+  }
 }
 
 export default async function handler(req, res) {
@@ -62,8 +69,9 @@ export default async function handler(req, res) {
             await post(req, res);
             break;
     case 'DELETE':
-            await del(req, res);
-            break;
+      console.log('delete');
+          await del(req, res);
+          break;
     default:
             res.setHeader('Allow', ['GET', 'POST', 'DELETE']);
             res.status(405).end(`Method ${method} Not Allowed`);

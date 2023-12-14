@@ -13,9 +13,9 @@ export default function CreateProfile() {
     heartRate: '',
     vo2Max: '',
     bloodType: '', // Add bloodType field
-    allergies: [], // Add allergies field as an array
-    medications: [], // Add medications field as an array
-    medicalConditions: [], // Add medicalConditions field as an array
+    allergies: '', // Add allergies field as an array
+    medications: '', // Add medications field as an array
+    medicalConditions: '', // Add medicalConditions field as an array
   });
 
   const router = useRouter();
@@ -36,13 +36,7 @@ export default function CreateProfile() {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    if (name === 'allergies' || name === 'medications' || name === 'medicalConditions') {
-      // If the field is allergies, medications, or medicalConditions, split the input by commas to store as an array
-      const valuesArray = value.split(',').map((item) => item.trim());
-      setProfileData((prevData) => ({ ...prevData, [name]: valuesArray }));
-    } else {
       setProfileData((prevData) => ({ ...prevData, [name]: value }));
-    }
   };
 
 

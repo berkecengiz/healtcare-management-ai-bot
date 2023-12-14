@@ -60,9 +60,9 @@ async function createProfile(req, res, userId) {
       heartRate,
       vo2Max,
       bloodType,
-      allergies: { set: allergies }, // Store allergies as an array
-      medications: { set: medications }, // Store medications as an array
-      medicalConditions: { set: medicalConditions }, // Store medical conditions as an array
+      allergies,
+      medications,
+      medicalConditions,
       user: { connect: { id: userId } },
     },
   });

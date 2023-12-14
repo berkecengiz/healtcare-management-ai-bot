@@ -40,17 +40,20 @@ const DoctorsPage = () => {
                     Authorization: `Bearer ${token}`
                 }
             });
-            setNewDoctor({ name: '', specialty: '' });
             fetchDoctors(); // Refresh the list
         } catch (error) {
             console.error('Error adding doctor:', error);
         }
     };
-    // Inside DoctorsPage component
 
     const handleDeleteDoctor = async (id) => {
         try {
-            await axios.delete(`/api/doctors/${id}`);
+            const token = localStorage.getItem('token');
+            await axios.delete(`/api/doctors/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
             fetchDoctors(); // Refresh the list
         } catch (error) {
             console.error('Error deleting doctor:', error);
@@ -62,7 +65,7 @@ const DoctorsPage = () => {
             <Header />
     
             <main className="flex-grow container mx-auto p-4">
-                <h1 className="text-xl font-bold mb-4 text-center">Manage Doctors</h1>
+                <h1 className="text-xl font-bold mb-4 text-center">My Doctors</h1>
     
                 <form onSubmit={handleAddDoctor} className="mb-6 flex flex-col items-center">
                     <div className="flex flex-wrap -mx-3 mb-6">
