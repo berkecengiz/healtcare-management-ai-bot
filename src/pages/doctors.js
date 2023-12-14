@@ -41,6 +41,7 @@ const DoctorsPage = () => {
                 }
             });
             fetchDoctors(); // Refresh the list
+            setNewDoctor({ name: '', specialty: '' });
         } catch (error) {
             console.error('Error adding doctor:', error);
         }
@@ -57,6 +58,7 @@ const DoctorsPage = () => {
 
             console.log('Doctor deleted:', response);
             fetchDoctors(); // Refresh the list
+            setNewDoctor({ name: '', specialty: '' });
         } catch (error) {
             console.error('Error deleting doctor:', error);
         }
