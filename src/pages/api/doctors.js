@@ -1,3 +1,4 @@
+// src/pages/api/doctors.js
 import prisma from '../../lib/prisma';
 import jwt from 'jsonwebtoken';
 
@@ -42,38 +43,19 @@ export async function post(req, res) {
     res.json(result);
 }
 
-// DELETE /api/doctors/:id
-export async function del(req, res) {
-  const { doctorId } = req.params;
-  console.log(doctorId);
-
-  try {
-    const result = await prisma.doctor.delete({
-        where: { id: doctorId },
-    });
-    res.json(result);
-  } catch (error) {
-      console.error("Error deleting doctor:", error);
-      res.status(500).send("Error deleting doctor");
-  }
-}
 
 export default async function handler(req, res) {
     const { method } = req;
 
     switch (method) {
-        case 'GET':
-            await get(req, res);
-            break;
+      case 'GET':
+        await get(req, res);
+        break;
     case 'POST':
-            await post(req, res);
-            break;
-    case 'DELETE':
-      console.log('delete');
-          await del(req, res);
-          break;
+        await post(req, res);
+        break;
     default:
-            res.setHeader('Allow', ['GET', 'POST', 'DELETE']);
-            res.status(405).end(`Method ${method} Not Allowed`);
+        res.setHeader('Allow', ['GET', 'POST']);
+        res.status(405).end(`Method ${method} Not Allowed`);
   }
 }

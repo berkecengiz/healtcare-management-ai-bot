@@ -49,11 +49,13 @@ const DoctorsPage = () => {
     const handleDeleteDoctor = async (id) => {
         try {
             const token = localStorage.getItem('token');
-            await axios.delete(`/api/doctors/${id}`, {
+            const response = await axios.delete(`/api/doctors/${id}`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
             });
+
+            console.log('Doctor deleted:', response);
             fetchDoctors(); // Refresh the list
         } catch (error) {
             console.error('Error deleting doctor:', error);
