@@ -19,6 +19,7 @@ model User {
 
   profile     UserProfile?
   Appointment Appointment[] 
+  doctors     Doctor[]
 }
 
 model UserProfile {
@@ -41,7 +42,24 @@ model UserProfile {
 model Appointment {
   id          Int      @id @default(autoincrement())
   userId      Int
+  doctorId    Int?  
   date        DateTime
   description String
+
   user        User     @relation(fields: [userId], references: [id])
+  doctor      Doctor?  @relation(fields: [doctorId], references: [id]) // Make this optional
+
+  @@unique([doctorId, date])
+}
+
+
+model Doctor {
+  id        Int      @id @default(autoincrement())
+  name      String
+  specialty String
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  appointments Appointment[]
+
+  @@unique([name, userId])
 }

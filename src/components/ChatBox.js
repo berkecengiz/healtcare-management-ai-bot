@@ -98,7 +98,7 @@ export default function ChatBox() {
   const handleLogout = async () => {
       localStorage.removeItem('token');
       // Redirect to login page or home page
-      window.location.href = '/login'; // Use the appropriate route for your login page
+      window.location.href = '/';
     };
 
   return (

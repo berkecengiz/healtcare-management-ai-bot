@@ -3,9 +3,18 @@ import Link from 'next/link';
 
 const Header = () => {
     const [dropdownOpen, setDropdownOpen] = useState(false);
-
+    const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
     const toggleDropdown = () => {
         setDropdownOpen(!dropdownOpen);
+    };
+    const toggleProfileDropdown = () => {
+        setProfileDropdownOpen(!profileDropdownOpen);
+    };
+
+    const handleLogout = async () => {
+        localStorage.removeItem('token');
+        // Redirect to login page or home page
+        window.location.href = '/'; // Use the appropriate route for your login page
     };
 
     return (
@@ -18,7 +27,11 @@ const Header = () => {
                 <Link legacyBehavior href="/chat">
                   <a className="mr-5 hover:text-gray-300">Chat</a>
                 </Link>
-                <div className="relative">
+                {/* add doctors */}
+                <Link legacyBehavior href="/doctors">
+                  <a className="mr-5 hover:text-gray-300">Doctors</a>
+                </Link>
+                <div className="relative mr-4">
                     <button onClick={toggleDropdown} className="text-white focus:outline-none">
                         Appointments
                     </button>
@@ -33,8 +46,27 @@ const Header = () => {
                         </div>
                     )}
                 </div>
+                <div className="relative">
+                        <button onClick={toggleProfileDropdown} className="text-white focus:outline-none">
+                            Profile
+                        </button>
+                        {profileDropdownOpen && (
+                            <div className="absolute right-0 mt-2 py-2 w-48 bg-white rounded-md shadow-xl z-20">
+                                <Link legacyBehavior href="/profile">
+                                    <a className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">View Profile</a>
+                                </Link>
+                                <Link legacyBehavior href="/settings">
+                                    <a className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</a>
+                                </Link>
+                            {/* handle log-out */}
+                                <div className="border-t border-gray-100"></div>
+                                <button onClick={handleLogout} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Logout</button>
+                            </div>
+                        )}
+                    </div>
               </nav>
             </div>
+
         </header>
     );
 };
